@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="76519b10-8967-4f49-a177-1ec03386c09d" >
 		<http:listener-connection host="0.0.0.0" port="8081" />
 	</http:listener-config>
 	<flow name="pipline-cicd-githubFlow" doc:id="aa28fa20-8be8-4fc5-a9b9-8d0bf547d76c" >
 		<http:listener doc:name="/api" doc:id="a458a7ae-bcde-4012-8b10-900d15a67e47" config-ref="HTTP_Listener_config" path="/api"/>
 		<logger level="INFO" doc:name="Logger" doc:id="da017238-0886-4dbd-a381-b0bf43813687" message='#["its working"]'/>
-		<set-payload value='#["its working superman"]' doc:name="Set Payload" doc:id="3bd9c89c-8edc-4d64-aa5e-d618254cec52" />
+		<set-payload value='#["its working batman"]' doc:name="Set Payload" doc:id="3bd9c89c-8edc-4d64-aa5e-d618254cec52" />
+		<ee:transform doc:name="Transform Message" doc:id="bc541179-181e-4a58-a33e-fcfa42c7a6ad" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"Hello" ++ " " ++ payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
 	</flow>
 </mule>
